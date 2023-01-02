@@ -3,7 +3,6 @@ package web.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
 import web.dao.UserDao;
 import web.entity.User;
 
@@ -22,27 +21,32 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public List<User> getUsers() {
-        return userDao.getUsers();
+        return userDao.findAll();
     }
 
     @Override
+    @Transactional
     public void addUser(User user) {
-        userDao.addUser(user);
+        userDao.save(user);
     }
 
     @Override
     public User getSingleUserById(Long id) {
-        return userDao.getSingleUserById(id);
+        return userDao.findById(id).orElseThrow(
+                () -> new RuntimeException("Пользователя с таким ID не существует!!!")
+        );
     }
 
     @Override
+    @Transactional
     public void update(User user){
-        userDao.update(user);
+        userDao.save(user);
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
-        userDao.delete(id);
+        userDao.deleteById(id);
     }
 
 

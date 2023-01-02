@@ -25,19 +25,19 @@ public class UserController {
     public String showAllUsers(ModelMap model) {
         List<User> list = userService.getUsers();
         model.addAttribute("listUsers", list);
-        return "index";
+        return "pages/index";
     }
 
     @GetMapping(value = "/show_single_user")
     public String showSingleUser (@RequestParam(value = "id") Long id, Model model) {
         model.addAttribute("user", userService.getSingleUserById(id));
-        return "show_user";
+        return "pages/show_user";
     }
 
     @GetMapping("/add_user")
     public String addUser(Model model){
         model.addAttribute("user", new User());
-        return "add_user";
+        return "pages/add_user";
     }
 
     @PostMapping()
@@ -49,11 +49,14 @@ public class UserController {
     @GetMapping("/edit_user")
     public String edit(@RequestParam(value = "id") Long id, Model model) {
         model.addAttribute("user", userService.getSingleUserById(id));
-        return "edit_user";
+        System.out.println("****** Пользователь передан в модель для заполнения полей");
+        return "pages/edit_user";
     }
     @PatchMapping("/save_edit_user")
     public String updateUser(@ModelAttribute("user") User user) {
+        System.out.println("****** Нажата кнопка сохранить изменения");
         userService.update(user);
+        System.out.println("****** Пользователь сохранен");
         return "redirect:/";
     }
 
